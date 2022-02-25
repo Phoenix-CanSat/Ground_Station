@@ -1,9 +1,17 @@
 #include <Arduino.h>
 
+#include "Initialization.h"
+#include "RF.h"
+
 void setup() {
-  // put your setup code here, to run once:
+
+  // Initializes Serial and Ground Station.
+  while(!Serial);
+  Serial.begin(115200);
+  InitializeGroundStation();
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  RFReceiveData();
 }
