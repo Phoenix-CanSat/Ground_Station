@@ -50,6 +50,8 @@ void RFReceiveData() {
     uint8_t len = sizeof(packet);
 
     if (rf.recv(packet, &len)){
+        packet[len] = '\0';
         Serial.println((char*)packet);
+        Serial.flush();
     }
 }
