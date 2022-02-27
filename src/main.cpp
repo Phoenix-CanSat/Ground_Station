@@ -1,16 +1,14 @@
 #include <Arduino.h>
 
 #include "Initialization.h"
+#include "Time.h"
 #include "RF.h"
 #include "ReadFromSensors.h"
-
-#define INITTIME 5000
 
 /* #define X 0
 #define Y 1
 #define Z 2
 
-uint32_t time = 0;
 float temperature = 0;
 float pressure = 0;
 float latitude = 0;
@@ -38,35 +36,31 @@ void Parse() {
   }
 } */
 
-// Returns the time in milliseconds (ms) since completion of initialization.
-uint32_t Time() {
-  return millis() - INITTIME;
-}
-
 void setup() {
   while (!Serial);
   // Initializes Serial and Ground Station.
   Serial.begin(115200);
   InitializeGroundStation();
-  
-  if (millis() <= INITTIME) {
-    delay(INITTIME - millis());
-  }
+  CalculateInitTime();
 }
 
 void loop() {
 
-  float groundtemperature = GetGroundTemperature();
-  float groundpressure = GetGroundPressure();
-  char data[225];
+  // Time data was read.
+  int time = Time();
 
+  // Stores GS sensor values to appropriate variables.
+  double groundtemperature = GetGroundTemperature();
+  double groundpressure = GetGroundPressure();
+  
+  char data[225];
   if (RFReceiveData(data)) {
     snprintf(data, 225, "%s,%.2f,%.2f", data, groundtemperature, groundpressure);
     //Parse();
     Serial.println(data);
     Serial.flush();
   } else {
-    snprintf(data, 225, "%.2f,%.2f", groundtemperature, groundpressure);
+    snprintf(data, 225, "%d,%.2f,%.2f", time, groundtemperature, groundpressure);
   }
   
   yield();

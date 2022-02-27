@@ -13,8 +13,8 @@ bool BMPInit();
 //-----------------------------------------------------Read From Sensors Functions------------------------------------------------------//
 
 /// Reads required value from respective sensor.
-/// @return value in float
-float GetGroundTemperature();           // Ground Temperature in Celsius (°C).
-float GetGroundPressure();              // Ground Pressure in HectoPascal/Millibar (hPa/mbar).
+/// @return value in double.
+double GetGroundTemperature();           // Ground Temperature in Celsius (°C).
+double GetGroundPressure();              // Ground Pressure in HectoPascal/Millibar (hPa/mbar).
 
 #endif

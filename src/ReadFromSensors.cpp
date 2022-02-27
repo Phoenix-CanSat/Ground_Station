@@ -27,7 +27,7 @@ bool BMPInit() {
 //-----------------------------------------------------Read From Sensors Functions------------------------------------------------------//
 
 // Ground Temperature in Celsius (°C).
-float GetGroundTemperature() {
+double GetGroundTemperature() {
     // No value if BMP280 isn't initialized.
     if (!bmpinit) {
         return 0;
@@ -37,11 +37,11 @@ float GetGroundTemperature() {
 }
 
 // Ground Pressure in HectoPascal/Millibar (hPa/mbar).
-float GetGroundPressure() {
+double GetGroundPressure() {
     // No value if BMP280 isn't initialized.
     if (!bmpinit) {
         return 0;
     } else {
-        return BMP.readPressure() / 100.0F;
+        return BMP.readPressure() / 100.0;
     }
 }
