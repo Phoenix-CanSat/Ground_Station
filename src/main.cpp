@@ -6,7 +6,7 @@
 
 #define INITTIME 5000
 
-#define X 0
+/* #define X 0
 #define Y 1
 #define Z 2
 
@@ -36,7 +36,7 @@ void Parse() {
     gravity[Y] = Serial.parseFloat();
     gravity[Z] = Serial.parseFloat();
   }
-}
+} */
 
 // Returns the time in milliseconds (ms) since completion of initialization.
 uint32_t Time() {
@@ -55,8 +55,18 @@ void setup() {
 }
 
 void loop() {
-  if(RFReceiveData()) {
-    Parse();
+
+  float groundtemperature = GetGroundTemperature();
+  float groundpressure = GetGroundPressure();
+  char data[225];
+
+  if (RFReceiveData(data)) {
+    snprintf(data, 225, "%s,%.2f,%.2f", data, groundtemperature, groundpressure);
+    //Parse();
+    Serial.println(data);
+    Serial.flush();
+  } else {
+    snprintf(data, 225, "%.2f,%.2f", groundtemperature, groundpressure);
   }
   
   yield();

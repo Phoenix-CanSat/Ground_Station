@@ -10,6 +10,6 @@
 bool RFInit();
 
 /// Attempts to receive packet from CanSat.
-bool RFReceiveData();
+bool RFReceiveData(char data[]);
 
 #endif

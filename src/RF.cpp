@@ -39,7 +39,7 @@ bool RFInit() {
     return rfInit_;
 }
 
-bool RFReceiveData() {
+bool RFReceiveData(char data[]) {
     
     if (!rfInit_) {
         Serial.println("RF is not initialized.");
@@ -48,12 +48,12 @@ bool RFReceiveData() {
 
     uint8_t packet[225];
     uint8_t len = sizeof(packet);
-    Serial.parseFloat();
+    
     if (rf.recv(packet, &len)) {
         packet[len] = '\0';
-        Serial.println((char*)packet);
-        Serial.flush();
+        snprintf(data, 225, "%s", (char*)packet);
         return true;
     }
+
     return false;
 }
