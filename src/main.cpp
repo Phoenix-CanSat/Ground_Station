@@ -36,13 +36,16 @@ void Parse() {
   }
 } */
 
-int StandByTime = 300;
-int consequtivePacketsLost = 0;
+#define MAXSTANDBYTIME 500
+#define MINSTANDBYTIME 250
+
+uint32_t StandByTime = MINSTANDBYTIME;
+int8_t consequtivePacketsLost = 0;
 
 void setup() {
   while (!Serial);
   // Initializes Serial and Ground Station.
-  Serial.begin(115200);
+  Serial.begin(9800);
   InitializeGroundStation();
   CalculateInitTime();
 }
@@ -50,27 +53,27 @@ void setup() {
 void loop() {
 
   // Time data was read.
-  int time = Time();
+  uint32_t time = Time();
 
   // Stores GS sensor values to appropriate variables.
-  double groundtemperature = GetGroundTemperature();
-  double groundpressure = GetGroundPressure();
+  float groundtemperature = GetGroundTemperature();
+  float groundpressure = GetGroundPressure();
   
   char data[225];
   while (!RFReceiveData(data) && Time()-time<=StandByTime);
   if (Time()-time<=StandByTime) {
     snprintf(data, 225, "%s,%.2f,%.2f", data, groundtemperature, groundpressure);
     //Parse();
-    Serial.println(data);
-    Serial.flush();
     consequtivePacketsLost = 0;
   } else {
-    snprintf(data, 225, "%d,%.2f,%.2f", time, groundtemperature, groundpressure);
+    snprintf(data, 225, "%lu,%.2f,%.2f", time, groundtemperature, groundpressure);
     consequtivePacketsLost += 1;
-    if (consequtivePacketsLost >= 2 && StandByTime <= 600) {
+    if (consequtivePacketsLost >= 2 && StandByTime <= MAXSTANDBYTIME) {
       StandByTime += 50;
     }
   }
+  Serial.println(data);
+  Serial.flush();
 
   yield();
 }

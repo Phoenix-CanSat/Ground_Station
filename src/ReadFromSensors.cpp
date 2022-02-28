@@ -3,14 +3,7 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP280.h>
 
-#define BMP_SCK 13
-#define BMP_MISO 12
-#define BMP_MOSI 11
-#define BMP_CS 10
-
-Adafruit_BMP280 BMP;  // I2C
-// Adafruit_BMP280 BMP(BMP_CS); // hardware SPI
-// Adafruit_BMP280 BMP(BMP_CS, BMP_MOSI, BMP_MISO,  BMP_SCK);
+Adafruit_BMP280 BMP;
 
 bool bmpinit = false;
 
@@ -27,21 +20,21 @@ bool BMPInit() {
 //-----------------------------------------------------Read From Sensors Functions------------------------------------------------------//
 
 // Ground Temperature in Celsius (°C).
-double GetGroundTemperature() {
+float GetGroundTemperature() {
     // No value if BMP280 isn't initialized.
     if (!bmpinit) {
-        return 0;
+        return (float)NAN;
     } else {
         return BMP.readTemperature();
     }
 }
 
 // Ground Pressure in HectoPascal/Millibar (hPa/mbar).
-double GetGroundPressure() {
+float GetGroundPressure() {
     // No value if BMP280 isn't initialized.
     if (!bmpinit) {
-        return 0;
+        return (float)NAN;
     } else {
-        return BMP.readPressure() / 100.0;
+        return BMP.readPressure() / 100.0F;
     }
 }
