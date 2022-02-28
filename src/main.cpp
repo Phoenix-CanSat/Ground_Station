@@ -36,6 +36,9 @@ void Parse() {
   }
 } */
 
+int StandByTime = 300;
+int consequtivePacketsLost = 0;
+
 void setup() {
   while (!Serial);
   // Initializes Serial and Ground Station.
@@ -54,14 +57,20 @@ void loop() {
   double groundpressure = GetGroundPressure();
   
   char data[225];
-  if (RFReceiveData(data)) {
+  while (!RFReceiveData(data) && Time()-time<=StandByTime);
+  if (Time()-time<=StandByTime) {
     snprintf(data, 225, "%s,%.2f,%.2f", data, groundtemperature, groundpressure);
     //Parse();
     Serial.println(data);
     Serial.flush();
+    consequtivePacketsLost = 0;
   } else {
     snprintf(data, 225, "%d,%.2f,%.2f", time, groundtemperature, groundpressure);
+    consequtivePacketsLost += 1;
+    if (consequtivePacketsLost >= 2 && StandByTime <= 600) {
+      StandByTime += 50;
+    }
   }
-  
+
   yield();
 }
