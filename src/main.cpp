@@ -40,7 +40,13 @@ void Parse() {
 #define MINSTANDBYTIME 250
 
 uint32_t StandByTime = MINSTANDBYTIME;
-int8_t consequtivePacketsLost = 0;
+uint8_t consequtivePacketsLost = 0;
+
+void floatToString(float var, int dec_digits, char str[]) {
+  int var_int = (int)var;
+  int var_float = (int)((abs(var) - abs(var_int)) * pow(10, dec_digits));
+  snprintf(str, 10, "%d.%d", var_int, var_float);
+}
 
 void setup() {
   while (!Serial);
@@ -58,15 +64,23 @@ void loop() {
   // Stores GS sensor values to appropriate variables.
   float groundtemperature = GetGroundTemperature();
   float groundpressure = GetGroundPressure();
-  
+  // TODO:
+  //  TSL values
+
+  // Converts values to strings.
+  char GTempStr[10];
+  char GPresStr[10];
+  floatToString(groundtemperature, 2, GTempStr);
+  floatToString(groundpressure, 2, GPresStr);
+
   char data[225];
   while (!RFReceiveData(data) && Time()-time<=StandByTime);
   if (Time()-time<=StandByTime) {
-    snprintf(data, 225, "%s,%.2f,%.2f", data, groundtemperature, groundpressure);
+    snprintf(data, 225, "%s,%s,%s", data, GTempStr, GPresStr);
     //Parse();
     consequtivePacketsLost = 0;
   } else {
-    snprintf(data, 225, "%lu,%.2f,%.2f", time, groundtemperature, groundpressure);
+    snprintf(data, 225, "%lu,%s,%s", time, GTempStr, GPresStr);
     consequtivePacketsLost += 1;
     if (consequtivePacketsLost >= 2 && StandByTime <= MAXSTANDBYTIME) {
       StandByTime += 50;
@@ -76,4 +90,4 @@ void loop() {
   Serial.flush();
 
   yield();
-}
+} 
