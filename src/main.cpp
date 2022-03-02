@@ -51,7 +51,7 @@ void floatToString(float var, int dec_digits, char str[]) {
 void setup() {
   while (!Serial);
   // Initializes Serial and Ground Station.
-  Serial.begin(9800);
+  Serial.begin(9600);
   InitializeGroundStation();
   CalculateInitTime();
 }
@@ -64,8 +64,6 @@ void loop() {
   // Stores GS sensor values to appropriate variables.
   float groundtemperature = GetGroundTemperature();
   float groundpressure = GetGroundPressure();
-  // TODO:
-  //  TSL values
 
   // Converts values to strings.
   char GTempStr[10];
