@@ -72,6 +72,8 @@ void loop() {
   floatToString(groundpressure, 2, GPresStr);
 
   char data[225];
+
+  // Waits untill data is received
   while (!RFReceiveData(data) && Time()-time<=StandByTime);
   if (Time()-time<=StandByTime) {
     snprintf(data, 225, "%s,%s,%s", data, GTempStr, GPresStr);
