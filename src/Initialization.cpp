@@ -10,6 +10,8 @@ void InitializeGroundStation() {
 
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
+    // TODO: Add SD support.
+    
     // Initializes RFM9X.
     if (RFInit()) {
         Serial.println("RF initialized.");

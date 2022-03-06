@@ -82,12 +82,14 @@ void loop() {
   } else {
     snprintf(data, 225, "%lu,%s,%s", time, GTempStr, GPresStr);
     consequtivePacketsLost += 1;
-    if (consequtivePacketsLost >= 2 && StandByTime <= MAXSTANDBYTIME) {
+    if (consequtivePacketsLost >= 2 && StandByTime < MAXSTANDBYTIME) {
       StandByTime += 50;
     }
   }
   Serial.println(data);
   Serial.flush();
 
+  // TODO: Add SD support.
+
   yield();
-} 
+}
