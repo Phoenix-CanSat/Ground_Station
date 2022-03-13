@@ -5,34 +5,25 @@
 #include "RF.h"
 #include "ReadFromSensors.h"
 
-/* #define X 0
-#define Y 1
-#define Z 2
-
-float temperature = 0;
-float pressure = 0;
-float latitude = 0;
-float longitude = 0;
-float altitude = 0;
-float humidity = 0;
-float magnetic[3] = {0, 0, 0};
-float gravity[3] = {0, 0, 0};
+/* uint32_t packetCounter;
+uint32_t trasnmitionTime;
+float temperature;
+float pressure;
+float latitude;
+float longitude;
+float altitude;
+float humidity;
 
 void Parse() {
   if (Serial.available()) {
-    time = Serial.parseInt();
+    packetCounter = Serial.parseInt();
+    trasnmitionTime = Serial.parseInt();
     temperature = Serial.parseFloat();
     pressure = Serial.parseFloat();
     latitude = Serial.parseFloat();
     longitude = Serial.parseFloat();
     altitude = Serial.parseFloat();
     humidity = Serial.parseFloat();
-    magnetic[X] = Serial.parseFloat();
-    magnetic[Y] = Serial.parseFloat();
-    magnetic[Z] = Serial.parseFloat();
-    gravity[X] = Serial.parseFloat();
-    gravity[Y] = Serial.parseFloat();
-    gravity[Z] = Serial.parseFloat();
   }
 } */
 
@@ -77,7 +68,6 @@ void loop() {
   while (!RFReceiveData(data) && Time()-time<=StandByTime);
   if (Time()-time<=StandByTime) {
     snprintf(data, 225, "%s,%s,%s", data, GTempStr, GPresStr);
-    //Parse();
     consequtivePacketsLost = 0;
   } else {
     snprintf(data, 225, "%lu,%s,%s", time, GTempStr, GPresStr);
@@ -86,8 +76,11 @@ void loop() {
       StandByTime += 50;
     }
   }
+
   Serial.println(data);
   Serial.flush();
+
+  // Parse();
 
   // TODO: Add SD support.
 
