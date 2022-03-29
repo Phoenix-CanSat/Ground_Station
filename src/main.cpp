@@ -2,6 +2,7 @@
 
 #include "Initialization.h"
 #include "Time.h"
+#include "DataToSD.h"
 #include "RF.h"
 #include "ReadFromSensors.h"
 
@@ -63,22 +64,25 @@ void loop() {
   floatToString(groundpressure, 2, GPresStr);
 
   char data[225];
+  char datags[225];
 
   // Waits untill data is received
   while (!RFReceiveData(data) && Time()-time<=StandByTime);
   if (Time()-time<=StandByTime) {
     snprintf(data, 225, "%s,%s,%s", data, GTempStr, GPresStr);
+    SDWrite(data, "dataall");
+    Serial.println(data);
+    Serial.flush();
     consequtivePacketsLost = 0;
   } else {
-    snprintf(data, 225, "%lu,%s,%s", time, GTempStr, GPresStr);
     consequtivePacketsLost += 1;
     if (consequtivePacketsLost >= 2 && StandByTime < MAXSTANDBYTIME) {
       StandByTime += 50;
     }
   }
 
-  Serial.println(data);
-  Serial.flush();
+  snprintf(datags, 225, "%lu,%s,%s", time, GTempStr, GPresStr);
+  SDWrite(datags, "datags");
 
   // Parse();
 

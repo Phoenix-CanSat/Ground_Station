@@ -10,3 +10,6 @@
 [submodule "lib/RadioHead"]
 	path = lib/RadioHead
 	url = https://github.com/adafruit/RadioHead.git
+[submodule "lib/SD"]
+	path = lib/SD
+	url = https://github.com/adafruit/SD.git
