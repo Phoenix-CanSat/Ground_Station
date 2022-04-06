@@ -8,6 +8,8 @@
 
 bool sd_init = false;
 
+uint32_t lastSaveTime = 0;
+
 // Initializes SD card.
 bool SDInit() {
     
@@ -16,20 +18,20 @@ bool SDInit() {
         return false;
     }
 
-    // Removes previously created files if they exist (only "DATA" and "LOGGER").
-    if (SD.exists("dataall")) {
-        SD.remove("dataall");
+    // Removes previously created files if they exist (only "data_all.csv" and "data_gs.csv").
+    if (SD.exists("data_all.csv")) {
+        SD.remove("data_all.csv");
     }
-    if (SD.exists("datags")) {
-        SD.remove("datags");
+    if (SD.exists("data_gs.csv")) {
+        SD.remove("data_gs.csv");
     }
 
     // Initialization successful.
     sd_init = true;
 
-    // Data file header.
-    SDWrite("Time,Temperature,Pressure,Latitude,Longitude,Altitude,Humidity,GroundTemperature,GroundPressure", "dataall");
-    SDWrite("GroundTemperature,GroundPressure", "datags");
+    // Data file headers.
+    SDWrite("Time,Temperature,Pressure,Latitude,Longitude,Altitude,Humidity,GroundTemperature,GroundPressure", "data_all.csv");
+    SDWrite("GroundTemperature,GroundPressure", "data_gs.csv");
 
     return sd_init;
 }

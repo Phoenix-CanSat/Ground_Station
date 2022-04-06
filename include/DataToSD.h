@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 /// Initializes SD card.
-/// Removes previously created files with names "DATA_ALL" and "DATA_GS" if they exist.
+/// Removes previously created files with names "data_all.csv" and "data_gs.csv" if they exist.
 /// @return true if initialization is successful.
 /// @return false if initialization fails or an SD card is not connected.
 bool SDInit();

@@ -1,5 +1,5 @@
-#ifndef TIME_FUNCTIONS_H
-#define TIME_FUNCTIONS_H
+#ifndef TIMER_FUNCTIONS_H
+#define TIMER_FUNCTIONS_H
 
 #include <Arduino.h>
 

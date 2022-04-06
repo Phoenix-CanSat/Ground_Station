@@ -52,10 +52,10 @@ bool RFReceiveData(char data[]) {
     if (rf.recv(packet, &len)) {
         packet[len] = '\0';
         
-        if (packet[0] == 'P' && packet[1] == 'H' && packet[2] == 'X') {
-            snprintf(data, 225, "%s", (char*)packet + 3);
-            return true;
-        }
+        //if (packet[0] == 'P' && packet[1] == 'H' && packet[2] == 'X') {
+        snprintf(data, 225, "%s", (char*)packet);
+        return true;
+        //}
     }
 
     return false;

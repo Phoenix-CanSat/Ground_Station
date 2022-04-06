@@ -3,6 +3,11 @@
 
 #include <Arduino.h>
 
+//-------------------------------------------------------Miscellaneous Functions--------------------------------------------------------//
+
+/// Converts float variables to char arrays.
+void floatToString(float var, int dec_digits, char str[]);
+
 //-------------------------------------------------------Initialization Functions-------------------------------------------------------//
 
 /// Initializes respective sensor.

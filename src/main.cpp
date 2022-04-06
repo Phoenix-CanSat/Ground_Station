@@ -1,56 +1,31 @@
 #include <Arduino.h>
 
 #include "Initialization.h"
-#include "Time.h"
+#include "Timer.h"
 #include "DataToSD.h"
 #include "RF.h"
 #include "ReadFromSensors.h"
 
-/* uint32_t packetCounter;
-uint32_t trasnmitionTime;
-float temperature;
-float pressure;
-float latitude;
-float longitude;
-float altitude;
-float humidity;
-
-void Parse() {
-  if (Serial.available()) {
-    packetCounter = Serial.parseInt();
-    trasnmitionTime = Serial.parseInt();
-    temperature = Serial.parseFloat();
-    pressure = Serial.parseFloat();
-    latitude = Serial.parseFloat();
-    longitude = Serial.parseFloat();
-    altitude = Serial.parseFloat();
-    humidity = Serial.parseFloat();
-  }
-} */
-
-#define MAXSTANDBYTIME 500
-#define MINSTANDBYTIME 250
-
-uint32_t StandByTime = MINSTANDBYTIME;
-uint8_t consequtivePacketsLost = 0;
-
-void floatToString(float var, int dec_digits, char str[]) {
-  int var_int = (int)var;
-  int var_float = (int)((abs(var) - abs(var_int)) * pow(10, dec_digits));
-  snprintf(str, 10, "%d.%d", var_int, var_float);
-}
+//------------------------------------------------------------Initialization------------------------------------------------------------//
 
 void setup() {
-  while (!Serial);
+
   // Initializes Serial and Ground Station.
+  while (!Serial);
   Serial.begin(9600);
+
+  // Initializes Systems and Sensors.
   InitializeGroundStation();
+
+  // Calculates initialization time.
   CalculateInitTime();
 }
 
 void loop() {
 
-  // Time data was read.
+//--------------------------------------------------------Get Data From Sensors---------------------------------------------------------//
+
+  // Time data is read.
   uint32_t time = Time();
 
   // Stores GS sensor values to appropriate variables.
@@ -63,30 +38,30 @@ void loop() {
   floatToString(groundtemperature, 2, GTempStr);
   floatToString(groundpressure, 2, GPresStr);
 
-  char data[225];
-  char datags[225];
+  char data[200];
+  char datags[100];
 
-  // Waits untill data is received
-  while (!RFReceiveData(data) && Time()-time<=StandByTime);
-  if (Time()-time<=StandByTime) {
+//-------------------------------------------------Store All Data and Print to Serial---------------------------------------------------//
+
+  // If data received from Bob:
+  if (RFReceiveData(data)) {
+
+    // Merges with Ground Station data.
     snprintf(data, 225, "%s,%s,%s", data, GTempStr, GPresStr);
-    SDWrite(data, "dataall");
+    
+    // Saves data to "data_all.csv" file.
+    SDWrite(data, "data_all.csv");
+
+    // Print data to Serial.
     Serial.println(data);
     Serial.flush();
-    consequtivePacketsLost = 0;
-  } else {
-    consequtivePacketsLost += 1;
-    if (consequtivePacketsLost >= 2 && StandByTime < MAXSTANDBYTIME) {
-      StandByTime += 50;
-    }
   }
 
+//---------------------------------------------------Store Ground Station Data to SD----------------------------------------------------//
+
+  // Stores Ground Station data separately in "data_gs.csv".
   snprintf(datags, 225, "%lu,%s,%s", time, GTempStr, GPresStr);
-  SDWrite(datags, "datags");
-
-  // Parse();
-
-  // TODO: Add SD support.
+  //SDWrite(datags, "data_gs.csv");
 
   yield();
 }

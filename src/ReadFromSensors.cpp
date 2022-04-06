@@ -7,9 +7,18 @@ Adafruit_BMP280 BMP;
 
 bool bmpinit = false;
 
+//-------------------------------------------------------Miscellaneous Functions--------------------------------------------------------//
+
+// Converts float variables to char arrays.
+void floatToString(float var, int dec_digits, char str[]) {
+    int var_int = (int)var;
+    int var_float = (int)((abs(var) - abs(var_int)) * pow(10, dec_digits));
+    snprintf(str, 10, "%d.%d", var_int, var_float);
+}
+
 //-------------------------------------------------------Initialization Functions-------------------------------------------------------//
 
-//  Initializes BMP280
+// Initializes BMP280
 bool BMPInit() {
     if (BMP.begin()) {
         bmpinit = true;
