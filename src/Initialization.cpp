@@ -1,39 +1,40 @@
 #include <Arduino.h>
 
 #include "Initialization.h"
+#include "Output.h"
 #include "DataToSD.h"
 #include "RF.h"
 #include "ReadFromSensors.h"
 
 void InitializeGroundStation() {
     
-    Serial.println("\nInitializing Ground Station...\n");
+    Say("\nInitializing Ground Station...\n");
 
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
     // Initializes micro SD card.
     if (SDInit()) {
-        Serial.println("SD init.");
+        Say("SD init.");
     } else {
-        Serial.println("SD not init.");
+        Say("SD not init.");
     }
 
     // Initializes RFM9X.
     if (RFInit()) {
-        Serial.println("RF init.");
+        Say("RF init.");
     } else {
-        Serial.println("RF not init.");
+        Say("RF not init.");
     }
 
     // Initializes BMP280.
     if (BMPInit()) {
-        Serial.println("BMP init.");
+        Say("BMP init.");
     } else {
-        Serial.println("BMP not init.");
+        Say("BMP not init.");
     }
 
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
-    Serial.println("\nGround Station Initialized.\n");
+    Say("\nGround Station Initialized.\n");
     
 }

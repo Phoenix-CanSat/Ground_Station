@@ -10,7 +10,7 @@
 
 void setup() {
 
-  // Initializes Serial and Ground Station.
+  // Initializes Serial.
   while (!Serial);
   Serial.begin(9600);
 
@@ -61,7 +61,7 @@ void loop() {
 
   // Stores Ground Station data separately in "data_gs.csv".
   snprintf(datags, 225, "%lu,%s,%s", time, GTempStr, GPresStr);
-  //SDWrite(datags, "data_gs.csv");
+  SDWrite(datags, "data_gs.csv");
 
   yield();
 }
