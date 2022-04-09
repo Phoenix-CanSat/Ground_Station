@@ -12,7 +12,7 @@ void setup() {
 
   // Initializes Serial.
   while (!Serial);
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Initializes Systems and Sensors.
   InitializeGroundStation();
