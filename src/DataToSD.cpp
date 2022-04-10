@@ -30,8 +30,8 @@ bool SDInit() {
     sd_init = true;
 
     // Data file headers.
-    SDWrite("Time,Temperature,Pressure,Latitude,Longitude,Altitude,Humidity,GroundTemperature,GroundPressure", "data_all.csv");
-    SDWrite("GroundTemperature,GroundPressure", "data_gs.csv");
+    SDWrite("PHX,Counter,Time,Temperature,Pressure,Latitude,Longitude,Altitude,Humidity,RSSI,GroundTemperature,GroundPressure", "data_all.csv");
+    SDWrite("Time,GroundTemperature,GroundPressure", "data_gs.csv");
 
     return sd_init;
 }
