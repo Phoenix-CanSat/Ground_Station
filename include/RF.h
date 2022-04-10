@@ -9,7 +9,7 @@
 /// @return false if initialization is unsuccessful or frequency could not be set.
 bool RFInit();
 
-/// Attempts to receive packet from CanSat.
+/// Checks if data from Bob is received.
 bool RFReceiveData(char data[]);
 
 #endif

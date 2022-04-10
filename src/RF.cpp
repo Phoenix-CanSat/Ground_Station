@@ -3,13 +3,14 @@
 #include <RH_RF95.h>
 
 #include "RF.h"
+#include "Output.h"
 
 #define RFM_CS 53
 #define RFM_RST 2
 #define RFM_INT 3
 
 RH_RF95 rf(RFM_CS, RFM_INT);
-bool rfInit_ = false;
+bool rf_init = false;
 
 // Initializes RFM9X.
 bool RFInit() {
@@ -23,38 +24,44 @@ bool RFInit() {
 
     // If failed, send appropriate message.
     if (!rf.init()) {
-        Serial.println("Could not initialize the RF.");
+        return rf_init;
     }
 
     // Sets RFM frequency to 433.2
     else if (!rf.setFrequency(433.2)) {
-        Serial.println("Could not set the RF frequency to 433.2 Hz.");
+        Say("RF freq not set.");
     }
     
     else {
+        // Sets the transmitter power output level.
+        rf.setTxPower(23, false);
+
         //Initialization successful.
-        rfInit_ = true;
+        rf_init = true;
     }
 
-    return rfInit_;
+    return rf_init;
 }
 
+// Checks if data from Bob is received.
 bool RFReceiveData(char data[]) {
     
-    if (!rfInit_) {
-        Serial.println("RF is not initialized.");
-        return false;
-    }
+    if (rf_init) {
 
-    uint8_t packet[225];
-    uint8_t len = sizeof(packet);
-    
-    if (rf.recv(packet, &len)) {
-        packet[len] = '\0';
-        
-        if (packet[0] == 'P' && packet[1] == 'H' && packet[2] == 'X' && packet[3] == ',') {
-            snprintf(data, 225, "%s,%d", (char*)packet, rf.lastRssi());
-            return true;
+        uint8_t packet[225];
+        uint8_t len = sizeof(packet);
+
+        // Attempts to receive packet.
+        if (rf.recv(packet, &len)) {
+            packet[len] = '\0';
+
+            // Checks for packet identifier in the packet received.
+            if (packet[0] == 'P' && packet[1] == 'H' && packet[2] == 'X' && packet[3] == ',') {
+
+                // Stores the packet and its RSSI to the data string.
+                snprintf(data, 225, "%s,%d", (char*)packet, rf.lastRssi());
+                return true;
+            }
         }
     }
 
