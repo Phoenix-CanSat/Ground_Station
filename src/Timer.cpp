@@ -13,3 +13,10 @@ void CalculateInitTime() {
 uint32_t Time() {
     return millis() - initTime;
 }
+
+// Waits untill the time since the moment given (second argument) is equal to or greater than the time of the first argument.
+void Wait(uint32_t delayMS, uint32_t time) {
+    if (Time() - time < delayMS) {
+        delay(delayMS - (Time() - time));
+    }
+}

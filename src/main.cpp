@@ -6,12 +6,16 @@
 #include "RF.h"
 #include "ReadFromSensors.h"
 
+#define loopDelay 100
+#define packetsDenied 15
+
+int8_t sd_control = packetsDenied;
+
 //------------------------------------------------------------Initialization------------------------------------------------------------//
 
 void setup() {
 
   // Initializes Serial.
-  while (!Serial);
   Serial.begin(115200);
 
   // Initializes Systems and Sensors.
@@ -55,13 +59,23 @@ void loop() {
     // Print data to Serial.
     Serial.println(data);
     Serial.flush();
+
+    sd_control = packetsDenied;
   }
 
 //---------------------------------------------------Store Ground Station Data to SD----------------------------------------------------//
-
+  
   // Stores Ground Station data separately in "data_gs.csv".
-  snprintf(datags, 225, "%lu,%s,%s", time, GTempStr, GPresStr);
-  SDWrite(datags, "data_gs.csv");
+
+  if (sd_control == packetsDenied) {
+    snprintf(datags, 225, "%lu,%s,%s", time, GTempStr, GPresStr);
+    SDWrite(datags, "data_gs.csv");
+    sd_control = 0;
+  } else {
+    sd_control += 1;
+  }
+
+  Wait(loopDelay, time);
 
   yield();
 }

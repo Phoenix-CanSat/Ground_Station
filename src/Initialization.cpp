@@ -8,7 +8,7 @@
 
 void InitializeGroundStation() {
     
-    Say("\nInitializing Ground Station...\n");
+    Say("Initializing Ground Station...");
 
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -35,6 +35,6 @@ void InitializeGroundStation() {
 
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
-    Say("\nGround Station Initialized.\n");
+    Say("Ground Station Initialized.");
     
 }
