@@ -57,7 +57,8 @@ void loop() {
     SDWrite(data, "data_all.csv");
 
     // Print data to Serial.
-    Serial.println(data);
+    Serial.print(data);
+    Serial.println(",$");
     Serial.flush();
 
     sd_control = packetsDenied;
