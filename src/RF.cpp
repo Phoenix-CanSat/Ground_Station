@@ -56,7 +56,7 @@ bool RFReceiveData(char data[]) {
             packet[len] = '\0';
 
             // Checks for packet identifier in the packet received.
-            if (packet[0] == 'P' && packet[1] == 'H' && packet[2] == 'X' && packet[3] == ',') {
+            if (packet[0] == 'P' && packet[1] == 'H' && packet[2] == 'X') {
 
                 // Stores the packet and its RSSI to the data string.
                 snprintf(data, 225, "%s,%d", (char*)packet, rf.lastRssi());

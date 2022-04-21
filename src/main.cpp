@@ -50,18 +50,21 @@ void loop() {
   // If data received from Bob:
   if (RFReceiveData(data)) {
 
-    // Merges with Ground Station data.
-    snprintf(data, 225, "%s,%s,%s", data, GTempStr, GPresStr);
-    
-    // Saves data to "data_all.csv" file.
-    SDWrite(data, "data_all.csv");
+    if (data[3] == ',') {
+      // Merges with Ground Station data.
+      snprintf(data, 225, "%s,%s,%s", data, GTempStr, GPresStr);
+
+      // Saves data to "data_all.csv" file.
+      SDWrite(data, "data_all.csv");
+
+      sd_control = packetsDenied;
+
+    }
 
     // Print data to Serial.
     Serial.print(data);
     Serial.println(",$");
     Serial.flush();
-
-    sd_control = packetsDenied;
   }
 
 //---------------------------------------------------Store Ground Station Data to SD----------------------------------------------------//
