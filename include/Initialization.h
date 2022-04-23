@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-/// Initializes RFM and Sensors.
+/// Initializes Systems and Sensors.
 void InitializeGroundStation();
 
 #endif

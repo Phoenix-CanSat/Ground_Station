@@ -47,7 +47,7 @@ void loop() {
 
 //-------------------------------------------------Store All Data and Print to Serial---------------------------------------------------//
 
-  // If data received from Bob:
+  // If data received from Mel:
   if (RFReceiveData(data)) {
 
     if (data[3] == ',') {

@@ -9,7 +9,7 @@
 /// @return false if initialization is unsuccessful or frequency could not be set.
 bool RFInit();
 
-/// Checks if data from Bob is received.
+/// Checks if data from Mel is received.
 bool RFReceiveData(char data[]);
 
 #endif

@@ -47,7 +47,7 @@ bool RFInit() {
     return rf_init;
 }
 
-// Checks if data from Bob is received.
+// Checks if data from Mel is received.
 bool RFReceiveData(char data[]) {
     
     if (FAKEDATA) {
