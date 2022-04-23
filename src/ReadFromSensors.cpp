@@ -13,7 +13,11 @@ bool bmpinit = false;
 void floatToString(float var, int dec_digits, char str[]) {
     int var_int = (int)var;
     int var_float = (int)((abs(var) - abs(var_int)) * pow(10, dec_digits));
-    snprintf(str, 10, "%d.%d", var_int, var_float);
+    if (var_float < 10) {
+        snprintf(str, 10, "%d.0%d", var_int, var_float);
+    } else {
+        snprintf(str, 10, "%d.%d", var_int, var_float);
+    }
 }
 
 //-------------------------------------------------------Initialization Functions-------------------------------------------------------//

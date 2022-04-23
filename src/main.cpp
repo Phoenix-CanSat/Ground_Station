@@ -62,8 +62,7 @@ void loop() {
     }
 
     // Print data to Serial.
-    Serial.print(data);
-    Serial.println(",$");
+    Serial.println(data);
     Serial.flush();
   }
 

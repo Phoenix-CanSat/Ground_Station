@@ -51,8 +51,9 @@ bool RFInit() {
 bool RFReceiveData(char data[]) {
     
     if (FAKEDATA) {
-        if (fakeData == 5) {
+        if (fakeData == 4) {
             snprintf(data, 225, "PHX,1,1000,22.53,1014.48,3808.5532,2400.8757,-0.19,35.07,30.00,-56");
+            fakeData = 0;
             return true;
         } else {
             fakeData += 1;
